@@ -1,7 +1,14 @@
 <div class="container">
     <div class="row">
+        <div class="col-xs-12">
             <h3>I'm in the AppComponent!</h3>
             <hr>
-            <app-servers></app-servers>
+            <button class="btn btn-primary" (click)="showSecretPass()"> {{ showPass ? 'Hide' : 'Display' }} Details</button>
+            <p>Secret Password = <span *ngIf="showPass">tuna</span></p>
+            <p>clicks: {{numClicks}}</p>
+            <div *ngFor="let click of clicks; let i = index">
+                <p [ngClass]="{blueWhite: i >= 5}">{{click}}</p>
+            </div>
+        </div>
     </div>
 </div>
