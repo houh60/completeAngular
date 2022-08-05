@@ -1,8 +1,9 @@
-import { EventEmitter } from "@angular/core";
+import { Subject } from "rxjs";
 import { Ingredient } from "../shared/ingredient.model";
 import { Recipe } from "./recipe.model";
 
 export class RecipeService {
+
     private recipes: Recipe[] = [
         new Recipe(
             'Steak', 'A super-tasty steak! Awesome!',
@@ -25,13 +26,20 @@ export class RecipeService {
         ),
     ];
 
-    recipeSelected = new EventEmitter<Recipe>();
+    recipeSelected = new Subject<Recipe>();
+    recipeUpdated = new Subject<Recipe>();
 
     getRecipes() {
-        return this.recipes.slice();
+        return this.recipes;
     }
 
     getRecipe(id: number) {
         return this.recipes[id];
+    }
+
+    delete(id: number) {
+        console.log('id: ', id);
+        this.recipes = this.recipes.splice(id, 1);
+        this.getRecipes();
     }
 }
