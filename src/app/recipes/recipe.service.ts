@@ -27,7 +27,7 @@ export class RecipeService {
     ];
 
     recipeSelected = new Subject<Recipe>();
-    recipeUpdated = new Subject<Recipe>();
+    recipesUpdated = new Subject<Recipe[]>();
 
     getRecipes() {
         return this.recipes;
@@ -38,16 +38,17 @@ export class RecipeService {
     }
 
     delete(id: number) {
-        console.log('id: ', id);
-        this.recipes = this.recipes.splice(id, 1);
-        this.getRecipes();
+        this.recipes.splice(id, 1);
+        this.recipesUpdated.next(this.recipes);
     }
 
     addRecipe(recipe: Recipe) {
         this.recipes.push(recipe);
+        this.recipesUpdated.next(this.recipes);
     }
 
     updateRecipe(index: number, newRecipe: Recipe) {
         this.recipes[index] = newRecipe;
+        this.recipesUpdated.next(this.recipes);
     }
 }
