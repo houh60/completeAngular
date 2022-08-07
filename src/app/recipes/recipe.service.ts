@@ -42,4 +42,12 @@ export class RecipeService {
         this.recipes = this.recipes.splice(id, 1);
         this.getRecipes();
     }
+
+    addRecipe(recipe: Recipe) {
+        this.recipes.push(recipe);
+    }
+
+    updateRecipe(index: number, newRecipe: Recipe) {
+        this.recipes[index] = newRecipe;
+    }
 }
