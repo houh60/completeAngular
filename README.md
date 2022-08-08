@@ -1,27 +1,21 @@
-# CompleteAngular
+    // private recipes: Recipe[] = [
+    //     new Recipe(
+    //         'Steak', 'A super-tasty steak! Awesome!',
+    //         'https://www.eatwell101.com/wp-content/uploads/2020/10/Garlic-Butter-Steak-recipe-roasted-in-Oven.jpg',
+    //         [
+    //             new Ingredient('Beef', 1),
+    //             new Ingredient('Potatos', 5),
+    //             new Ingredient('Green beans', 15)
+    //         ]
+    //     ),
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    //     new Recipe(
+    //         'Fried Chicken', 'What else do you need?',
+    //         'https://www.eatwell101.com/wp-content/uploads/2019/04/chicken-and-asparagus-skillet-recipe-2.jpg',
+    //         [
+    //             new Ingredient('Chicken', 1),
+    //             new Ingredient('Asparagus', 20),
+    //             new Ingredient('Lemon slices', 2)
+    //         ]
+    //     ),
+    // ];
