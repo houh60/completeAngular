@@ -19,5 +19,4 @@ export class RecipesResolverService implements Resolve<Recipe[]> {
             return recipes;
         }
     }
-
 }

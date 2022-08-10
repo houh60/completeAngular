@@ -1,23 +1,43 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { AuthService } from "../auth/auth.service";
 import { DataStorageService } from "../shared/data-storage.service";
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html'
+   selector: 'app-header',
+   templateUrl: './header.component.html'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
 
-    constructor(
-        private dataStorageService: DataStorageService
-    ) {}
+   isAuthenticated = false;
+   private userSub?: Subscription;
 
-    onSaveData() {
-        if(confirm('This will erase all the original data in storage. Are you sure you want to go on?')) {
-            this.dataStorageService.storeRecipes();
-        }
-    }
+   constructor(
+      private dataStorageService: DataStorageService,
+      private authService: AuthService
+   ) {}
 
-    onFetchData() {
-        this.dataStorageService.fetchRecipes().subscribe();
-    }
+   ngOnInit(): void {
+      this.userSub = this.authService.user.subscribe(user => {
+         this.isAuthenticated = user.email ? true : false;
+      });
+   }
+
+   onSaveData() {
+      if(confirm('This will erase all the original data in storage. Are you sure you want to go on?')) {
+         this.dataStorageService.storeRecipes();
+      }
+   }
+
+   onFetchData() {
+      this.dataStorageService.fetchRecipes().subscribe();
+   }
+
+   onLogout() {
+      this.authService.logout();
+   }
+
+   ngOnDestroy(): void {
+      this.userSub?.unsubscribe();
+   }
 }
