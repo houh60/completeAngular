@@ -13,6 +13,7 @@ export class AuthService {
    private signinUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
 
    user = new BehaviorSubject<User>({} as User);
+   private tokenExpirationTimer: any;
 
    constructor(
       private http: HttpClient,
@@ -40,18 +41,47 @@ export class AuthService {
       }));
    }
 
+   autoLogin() {
+      const userData = JSON.parse(sessionStorage.getItem('userData') as string);
+      if(!userData) {
+         return;
+      }
+      const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+
+      if(loadedUser.token) {
+         this.user.next(loadedUser);
+         const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+         this.autoLogout(expirationDuration);
+      }
+   }
+
    logout() {
       this.user.next({} as User);
+      sessionStorage.removeItem('userData');
       this.router.navigate(['/auth']);
+      if(this.tokenExpirationTimer) {
+         clearTimeout(this.tokenExpirationTimer);
+      }
+      this.tokenExpirationTimer = null;
+   }
+
+   autoLogout(expirationDuration: number) {
+      console.log('expirationDuration: ', expirationDuration);
+      this.tokenExpirationTimer = setTimeout(() => {
+         this.logout();
+      }, expirationDuration);
    }
 
    private authenticationHandling(email: string, userId: string, token: string, expiresIn: number) {
       const tokenExpirationDate = new Date(new Date().getTime() + expiresIn * 1000)
       const user = new User(email, userId, token, tokenExpirationDate);
       this.user.next(user);
+      this.autoLogout(expiresIn * 1000);
+      sessionStorage.setItem('userData', JSON.stringify(user));
    }
 
    private errorHandling(error: HttpErrorResponse) {
+      console.log('error: ', error);
       let errorMessage = 'An unknown error occurred!';
       if(!error.error || !error.error.error) {
          return throwError(() => new Error(errorMessage));
