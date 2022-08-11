@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
    { path: '', redirectTo: '/recipes', pathMatch: 'full' },
    { path: 'recipes', loadChildren: () => import('./recipes/recipe.module').then(x => x.RecipeModule) },
+   { path: 'shopping-list', loadChildren: () => import('./shopping-list/shopping-list.module').then(x => x.ShoppingListModule) },
+   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(x => x.AuthModule) },
 ];
 
 @NgModule({
