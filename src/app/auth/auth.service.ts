@@ -20,7 +20,6 @@ export class AuthService {
       private router: Router
    ) {}
 
-
    signup(email: string, password: string) {
       return this.http.post<AuthResponseData>(this.signupUrl + environment.key, {
          email: email,

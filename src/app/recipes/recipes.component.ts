@@ -4,24 +4,24 @@ import { Recipe } from './recipe.model';
 import { RecipeService } from './recipe.service';
 
 @Component({
-    selector: 'app-recipes',
-    templateUrl: './recipes.component.html',
-    styleUrls: ['./recipes.component.css']
+   selector: 'app-recipes',
+   templateUrl: './recipes.component.html',
+   styleUrls: ['./recipes.component.css']
 })
 export class RecipesComponent implements OnInit, OnDestroy {
 
-    selectedRecipe?: Recipe;
-    subscription?: Subscription;
+   selectedRecipe?: Recipe;
+   subscription?: Subscription;
 
-    constructor(
-        private recipeService: RecipeService
-    ) {}
+   constructor(
+      private recipeService: RecipeService
+   ) {}
 
-    ngOnInit(): void {
-        this.subscription = this.recipeService.recipeSelected.subscribe(recipe => this.selectedRecipe = recipe);
-    }
+   ngOnInit(): void {
+      this.subscription = this.recipeService.recipeSelected.subscribe(recipe => this.selectedRecipe = recipe);
+   }
 
-    ngOnDestroy(): void {
-        this.subscription?.unsubscribe();
-    }
+   ngOnDestroy(): void {
+      this.subscription?.unsubscribe();
+   }
 }
