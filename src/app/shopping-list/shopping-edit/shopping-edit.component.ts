@@ -1,9 +1,10 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
+import * as ShopplingListActions from '../store/shopping-list.actions';
 
 @Component({
    selector: 'app-shopping-edit',
@@ -19,7 +20,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
    @ViewChild('f') slForm?: NgForm;
 
    constructor(
-      private shoppingListService: ShoppingListService
+      private shoppingListService: ShoppingListService,
+      private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>
    ) {}
 
    ngOnInit(): void {
@@ -40,6 +42,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       } else {
          const newIngredients = new Ingredient(form.value.name, form.value.amount);
          this.shoppingListService.addIngredient(newIngredients);
+         this.store.dispatch(new ShopplingListActions.AddIngredient(newIngredients));
       }
       this.onClear();
    }
