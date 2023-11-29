@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { map, take, Observable } from "rxjs";
 import { AuthService } from "./auth.service";
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard  {
+export class AuthGuard {
 
    constructor(
       private authService: AuthService,
@@ -17,7 +17,7 @@ export class AuthGuard  {
          take(1),
          map(user => {
             const isAuth = !!user.email;
-            if(isAuth)
+            if (isAuth)
                return true;
             return this.router.createUrlTree(['/auth']);
          }));

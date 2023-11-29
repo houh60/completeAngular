@@ -1,10 +1,10 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
 import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthResponseData } from "./auth-response-data";
 import { User } from "./user.model";
+import { Router } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -42,12 +42,12 @@ export class AuthService {
 
    autoLogin() {
       const userData = JSON.parse(sessionStorage.getItem('userData') as string);
-      if(!userData) {
+      if (!userData) {
          return;
       }
       const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
 
-      if(loadedUser.token) {
+      if (loadedUser.token) {
          this.user.next(loadedUser);
          const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
          this.autoLogout(expirationDuration);
@@ -58,7 +58,7 @@ export class AuthService {
       this.user.next({} as User);
       sessionStorage.removeItem('userData');
       this.router.navigate(['/auth']);
-      if(this.tokenExpirationTimer) {
+      if (this.tokenExpirationTimer) {
          clearTimeout(this.tokenExpirationTimer);
       }
       this.tokenExpirationTimer = null;
@@ -71,7 +71,7 @@ export class AuthService {
    }
 
    private authenticationHandling(email: string, userId: string, token: string, expiresIn: number) {
-      const tokenExpirationDate = new Date(new Date().getTime() + expiresIn * 1000)
+      const tokenExpirationDate = new Date(new Date().getTime() + expiresIn * 1000);
       const user = new User(email, userId, token, tokenExpirationDate);
       this.user.next(user);
       this.autoLogout(expiresIn * 1000);
@@ -80,10 +80,10 @@ export class AuthService {
 
    private errorHandling(error: HttpErrorResponse) {
       let errorMessage = 'An unknown error occurred!';
-      if(!error.error || !error.error.error) {
+      if (!error.error || !error.error.error) {
          return throwError(() => new Error(errorMessage));
       }
-      switch(error.error.error.message) {
+      switch (error.error.error.message) {
          case 'EMAIL_EXISTS':
             errorMessage = 'This email already exists.';
             break;
