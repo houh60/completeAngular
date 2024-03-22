@@ -11,16 +11,18 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
 
-   ingredients!: Observable<{ ingredients: Ingredient[] }>;
+   ingredients!: Observable<{ ingredients: Ingredient[]; }>;
    nonObsevableIngredients?: Ingredient[];
+   subscription = new Subscription();
 
    constructor(
       private shoppingListService: ShoppingListService,
-      private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>
+      private store: Store<{ shoppingList: { ingredients: Ingredient[]; }; }>
    ) {}
 
    ngOnInit(): void {
-      this.store.select('shoppingList').subscribe(
+      this.ingredients = this.store.select('shoppingList');
+      this.subscription = this.store.select('shoppingList').subscribe(
          nonObsevableIngredients =>
             this.nonObsevableIngredients =
             nonObsevableIngredients
@@ -37,6 +39,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
    }
 
    ngOnDestroy(): void {
-      // this.subscription?.unsubscribe();
+      this.subscription?.unsubscribe();
    }
 }
