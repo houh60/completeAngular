@@ -11,27 +11,18 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
 
-   ingredients: Observable<{ ingredients: Ingredient[]; }>;
+   ingredients: Ingredient[];
    nonObsevableIngredients: Ingredient[];
    subscription = new Subscription();
 
    constructor(
       private shoppingListService: ShoppingListService,
-      private store: Store<{ shoppingList: { ingredients: Ingredient[]; }; }>
    ) {}
 
    ngOnInit(): void {
-      this.ingredients = this.store.select('shoppingList');
-      this.subscription = this.store.select('shoppingList').subscribe(
-         nonObsevableIngredients =>
-            this.nonObsevableIngredients =
-            nonObsevableIngredients
-               .ingredients
-               .filter(ingredient => ingredient != undefined)
-      );
-      // this.ingredients = this.shoppingListService.getIngredients();
-      // this.subscription = this.shoppingListService.ingredientsChanged
-      //    .subscribe(ingredients => this.ingredients = ingredients);
+      this.ingredients = this.shoppingListService.getIngredients();
+      this.subscription = this.shoppingListService.ingredientsChanged
+         .subscribe(ingredients => this.ingredients = ingredients);
    }
 
    onEditItem(index: number) {
